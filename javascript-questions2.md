@@ -30,7 +30,7 @@ How can this pitfall be avoided?
 	console.log(Array.isArray(bar));
 
 What will the code below output to the console and why?
-	(function(){
+	`(function(){
 	var a = b = 3;
 	})();
 	console.log("a defined? " + (typeof a !== 'undefined'));
@@ -38,7 +38,7 @@ What will the code below output to the console and why?
 
 	var a = b = 3; is actually shorthand for:
 	b = 3;
-	var a = b;
+	var a = b;`
 	As a result (if you are not using strict mode), the output of the code snippet would be:
 	a defined? false
 	b defined? true
@@ -52,7 +52,7 @@ What will the code below output to the console and why?
 	avoiding any headfakes/bugs that might othewise result. 
 
 What will the code below output to the console and why?
-	var myObject = {
+	`var myObject = {
 		foo: "bar",
 		func: function() {
 			var self = this;
@@ -64,29 +64,20 @@ What will the code below output to the console and why?
 			}());
 		}
 	};
-	myObject.func();
+	myObject.func();`
+
 	The above code will output the following to the console:
 	outer func: this.foo = bar
 	outer func: self.foo = bar
 	inner func: this.foo = undefined
 	inner func: self.foo = bar
 	
-	In the outer function, both this and self refer to myObject and therefore both can properly reference and access foo. In the inner 
-  function, though, this no longer refers to myObject . As a result, this.foo is undefined in the	inner function, whereas the 
-  reference to the local variable self remains in scope and is accessible here.
+In the outer function, both this and self refer to myObject and therefore both can properly reference and access foo. In the inner function, though, this no longer refers to myObject . As a result, this.foo is undefined in the  inner function, whereas the reference to the local variable self remains in scope and is accessible here.
 
 What is the significance of, and reason for, wrapping the entire content of a JavaScript source file 
 in a function block?
-	This is an increasingly common practice, employed by many popular JavaScript libraries
-	(jQuery, Node.js, etc.). This technique creates a closure around the entire contents of the
-	file which, perhaps most importantly, creates a private namespace and thereby helps avoid
-	potential name clashes between different JavaScript modules and libraries.
-	
-	Another feature of this technique is to allow for an easily referenceable (presumably
-	shorter) alias for a global variable. This is often used, for example, in jQuery plugins.
-	jQuery allows you to disable the $ reference to the jQuery namespace, using
-	jQuery.noConflict() . 
-	If this has been done, your code can still use $ employing	this closure technique, as follows:
+
+This is an increasingly common practice, employed by many popular JavaScript libraries(jQuery, Node.js, etc.). This technique creates a closure around the entire contents of the file which, perhaps most importantly, creates a private namespace and thereby helps avoid potential name clashes between different JavaScript modules and libraries. Another feature of this technique is to allow for an easily referenceable (presumably shorter) alias for a global variable. This is often used, for example, in jQuery plugins.	jQuery allows you to disable the $ reference to the jQuery namespace, using jQuery.noConflict() . If this has been done, your code can still use $ employing this closure technique, as follows:
 	(function($) {  }
 	)(jQuery);
 
@@ -135,7 +126,7 @@ JavaScript source file?
 	non-configurable property, whereas strict mode will throw an error in such a case.
 
 Consider the two functions below. Will they both return the same thing? Why or why not?
-	function foo1()
+	`function foo1()
 	{
 		return {
 			bar: "hello"
@@ -148,7 +139,7 @@ Consider the two functions below. Will they both return the same thing? Why or w
 		{
 			bar: "hello"
 		};
-	}
+	}`
 	
 	Surprisingly, these two functions will not return the same thing. Rather:
 	console.log("foo1 returns:");
@@ -162,17 +153,8 @@ Consider the two functions below. Will they both return the same thing? Why or w
 	foo2 returns:
 	undefined
 	foo2() returns undefined without any error being thrown.
-	The reason for this has to do with the fact that semicolons are technically optional in
-	JavaScript (although omitting them is generally really bad form). As a result, when the line
-	containing the return statement (with nothing else on the line) is encountered in
-	foo2() , a semicolon is automatically inserted immediately after the return statement.
-	No error is thrown since the remainder of the code is perfectly valid, even though it doesn’t ever get invoked 
-	or do anything (it is simply an unused code block that defines a property bar which is equal 
-	to the string "hello" ).
-
-	This behavior also argues for following the convention of placing an opening curly brace at
-	the end of a line in JavaScript, rather than on the beginning of a new line. As shown here,
-	this becomes more than just a stylistic preference in JavaScript.
+The reason for this has to do with the fact that semicolons are technically optional in	JavaScript (although omitting them is generally really bad form). As a result, when the line containing the return statement (with nothing else on the line) is encountered in	foo2() , a semicolon is automatically inserted immediately after the return statement.	No error is thrown since the remainder of the code is perfectly valid, even though it doesn’t ever get invoked 	or do anything (it is simply an unused code block that defines a property bar which is equal to the string "hello" ). This behavior also argues for following the convention of placing an opening curly brace at
+the end of a line in JavaScript, rather than on the beginning of a new line. As shown here, this becomes more than just a stylistic preference in JavaScript.
 
 What is NaN ? What is its type? How can you reliably test if a value is equal to NaN ?
 	The NaN property represents a value that is “not a number”. This special value results from an operation 
@@ -264,12 +246,12 @@ Write a sum method which will work properly when invoked using either syntax bel
 	which way the function was invoked and proceed accordingly.
 
 Consider the following code snippet:
-	for (var i = 0; i < 5; i++) {
+	`for (var i = 0; i < 5; i++) {
 		var btn = document.createElement('button');
 		btn.appendChild(document.createTextNode('Button ' + i));
 		btn.addEventListener('click', function(){ console.log(i); });
 		document.body.appendChild(btn);
-	}
+	}`
 (a) What gets logged to the console when the user clicks on “Button 4” and why?
 (b) Provide one or more alternate implementations that will work as expected.
 
@@ -280,7 +262,7 @@ the buttons), the for loop has already completed and the variable i already has 
 
 (b) The key to making this work is to capture the value of i at each pass through the for loop by passing it 
 into a newly created function object. Here are four possible ways to accomplish this:
-	for (var i = 0; i < 5; i++) {
+	`for (var i = 0; i < 5; i++) {
 		var btn = document.createElement('button');
 		btn.appendChild(document.createTextNode('Button ' + i));
 		btn.addEventListener('click', (function(i) {
@@ -288,51 +270,46 @@ into a newly created function object. Here are four possible ways to accomplish 
 		})(i));
 		
 		document.body.appendChild(btn);
-	}
+	}`
 	
 	Alternatively, you could wrap the entire call to btn.addEventListener in the new
 	anonymous function:
-	for (var i = 0; i < 5; i++) {
+	`for (var i = 0; i < 5; i++) {
 		var btn = document.createElement('button');
 		btn.appendChild(document.createTextNode('Button ' + i));
 		(function (i) {
 			btn.addEventListener('click', function() { console.log(i); });
 		})(i);
 		document.body.appendChild(btn);
-	}
+	}`
 Or, we could replace the for loop with a call to the array object’s native forEach method:
-	['a', 'b', 'c', 'd', 'e'].forEach(function (value, i) {
+	`['a', 'b', 'c', 'd', 'e'].forEach(function (value, i) {
 		var btn = document.createElement('button');
 		btn.appendChild(document.createTextNode('Button ' + i));
 		btn.addEventListener('click', function() { console.log(i); });
 		document.body.appendChild(btn);
-	});
+	});`
 
 The simplest solution, if you’re in an ES6/ES2015 context, is to use let i
 instead of var i :
-	for (let i = 0; i < 5; i++) {
+	`for (let i = 0; i < 5; i++) {
 		var btn = document.createElement('button');
 		btn.appendChild(document.createTextNode('Button ' + i));
 		btn.addEventListener('click', function(){ console.log(i); });
 		document.body.appendChild(btn);
-	}
+	}`
 
 
 Assuming d is an “empty” object in scope, say:
-	var d = {};
+	`var d = {};
 	…what is accomplished using the following code?
 	[ 'zebra', 'horse' ].forEach(function(k) {
 		d[k] = undefined;
-	});
-	The snippet of code shown above sets two properties on the object d . 
-	Ideally, any lookup performed on a JavaScript object with an unset key evaluates to undefined .
-	But running this code marks those properties as “own properties” of the object.
-	This is a useful strategy for ensuring that an object has a given set of properties. 
-	Passing this object to Object.keys will return an array with those set keys as well (even if
-	their values are undefined ).
+	});`
+The snippet of code shown above sets two properties on the object d . Ideally, any lookup performed on a JavaScript object with an unset key evaluates to undefined .But running this code marks those properties as “own properties” of the object.This is a useful strategy for ensuring that an object has a given set of properties. Passing this object to Object.keys will return an array with those set keys as well (even if their values are undefined ).
 
 What will the code below output to the console and why?
-	var arr1 = "john".split('');
+	`var arr1 = "john".split('');
 	var arr2 = arr1.reverse();
 	var arr3 = "jones".split('');
 	arr2.push(arr3);
@@ -341,56 +318,37 @@ What will the code below output to the console and why?
 
 	The logged output will be:
 	"array 1: length=5 last=j,o,n,e,s"
-	"array 2: length=5 last=j,o,n,e,s"
+	"array 2: length=5 last=j,o,n,e,s"`
 
-	arr1 and arr2 are the same (i.e. ['n','h','o','j', ['j','o','n','e','s'] ] ) after the above code is executed 
-	for the following reasons:
-	Calling an array object’s reverse() method doesn’t only return the array in reverse order, 
-	it also reverses the order of the array itself (i.e., in this case, arr1 ).
-
-	The reverse() method returns a reference to the array itself (i.e., in this case,
-	arr1 ). As a result, arr2 is simply a reference to (rather than a copy of) arr1 . 
-
-	Therefore, when anything is done to arr2 (i.e., when we invoke arr2.push(arr3); ), 
-	arr1 will be affected as well since arr1 and arr2 are simply references to the same object.
-
-	Passing an array to the push() method of another array pushes that entire
-	array as a single element onto the end of the array. As a result, the statement arr2.push(arr3); 
-	adds arr3 in its entirety as a single element to the end of arr2 
-	(i.e., it does not concatenate the two arrays, that’s what the concat() method is for).
-
-	Like Python, JavaScript honors negative subscripts in calls to array methods like
-	slice() as a way of referencing elements at the end of the array; e.g., a
-	subscript of -1 indicates the last element in the array, and so on.
+arr1 and arr2 are the same (i.e. ['n','h','o','j', ['j','o','n','e','s'] ] ) after the above code is executed for the following reasons:
+	Calling an array object’s reverse() method doesn’t only return the array in reverse order, it also reverses the order of the array itself (i.e., in this case, arr1 ).
+	The reverse() method returns a reference to the array itself (i.e., in this case, arr1 ). As a result, arr2 is simply a reference to (rather than a copy of) arr1 . 
+	Therefore, when anything is done to arr2 (i.e., when we invoke arr2.push(arr3); ), arr1 will be affected as well since arr1 and arr2 are simply references to the same object.
+	Passing an array to the push() method of another array pushes that entire array as a single element onto the end of the array. As a result, the statement arr2.push(arr3); 
+	adds arr3 in its entirety as a single element to the end of arr2 (i.e., it does not concatenate the two arrays, that’s what the concat() method is for).
+	Like Python, JavaScript honors negative subscripts in calls to array methods like slice() as a way of referencing elements at the end of the array; e.g., a subscript of -1 indicates the last element in the array, and so on.
 
 The following recursive code will cause a stack overflow if the array list is too large. How
 can you fix this and still retain the recursive pattern?
-		var list = readHugeList();
+		`var list = readHugeList();
 		var nextListItem = function() {
 			var item = list.pop();
 			if (item) {
 				// process the list item...
 				nextListItem();
 			}
-		};
+		};`
 
-The potential stack overflow can be avoided by modifying the nextListItem function
-as follows:
-	var list = readHugeList();
+The potential stack overflow can be avoided by modifying the nextListItem function as follows:
+	`var list = readHugeList();
 	var nextListItem = function() {
 		var item = list.pop();
 		if (item) {
 			// process the list item...
 			setTimeout( nextListItem, 0);
 		}
-	};
-	The stack overflow is eliminated because the event loop handles the recursion, not the call
-	stack. When nextListItem runs, if item is not null, the timeout function
-	( nextListItem ) is pushed to the event queue and the function exits, thereby leaving
-	the call stack clear. When the event queue runs its timed-out event, the next item is
-	processed and a timer is set to again invoke nextListItem . Accordingly, the method
-	is processed from start to finish without a direct recursive call, so the call stack remains
-	clear, regardless of the number of iterations.
+	};`
+	The stack overflow is eliminated because the event loop handles the recursion, not the call stack. When nextListItem runs, if item is not null, the timeout function( nextListItem ) is pushed to the event queue and the function exits, thereby leaving the call stack clear. When the event queue runs its timed-out event, the next item is processed and a timer is set to again invoke nextListItem . Accordingly, the method is processed from start to finish without a direct recursive call, so the call stack remains clear, regardless of the number of iterations.
 
 What is a “closure” in JavaScript? Provide an example.
 A closure is an inner function that has access to the variables in the outer (enclosing) function’s scope chain. 
@@ -399,7 +357,7 @@ The closure has access to variables in three scopes; specifically:
 (2) variables in the enclosing function’s scope, and 
 (3) global variables.
 Here is an example:
-	var globalVar = "xyz";
+	`var globalVar = "xyz";
 	(function outerFunc(outerArg) {
 		var outerVar = 'a';
 		(function innerFunc(innerArg) {
@@ -411,7 +369,7 @@ Here is an example:
 			"innerVar = " + innerVar + "\n" +
 			"globalVar = " + globalVar);
 		})(456);
-	})(123);
+	})(123);`
 	In the above example, variables from innerFunc , outerFunc , and the global
 	namespace are all in scope in the innerFunc . The above code will therefore produce
 	the following output:
@@ -422,35 +380,29 @@ Here is an example:
 	globalVar = xyz
 
 What will be the output of the following code:
-	for (var i = 0; i < 5; i++) {
+	`for (var i = 0; i < 5; i++) {
 		setTimeout(function() { console.log(i); }, i * 1000 );
-	}
+	}`
 Explain your answer. How could the use of closures help here?
-	
-	The code sample shown will not display the values 0, 1, 2, 3, and 4 as might be expected;
-	rather, it will display 5, 5, 5, 5, and 5.
-	The reason for this is that each function executed within the loop will be executed after the
-	entire loop has completed and all will therefore reference the last value stored in i ,	which was 5.
+	The code sample shown will not display the values 0, 1, 2, 3, and 4 as might be expected; rather, it will display 5, 5, 5, 5, and 5. The reason for this is that each function executed within the loop will be executed after the entire loop has completed and all will therefore reference the last value stored in i , which was 5.
 
-	Closures can be used to prevent this problem by creating a unique scope for each iteration, 
-	storing each unique value of the variable within its scope, as follows:
-	for (var i = 0; i < 5; i++) {
+Closures can be used to prevent this problem by creating a unique scope for each iteration, storing each unique value of the variable within its scope, as follows:
+	`for (var i = 0; i < 5; i++) {
 		(function(x) {
 			setTimeout(function() { console.log(x); }, x * 1000 );
 		})(i);
-	}
-	This will produce the presumably desired result of logging 0, 1, 2, 3, and 4 to the console.
-	
-	In an ES2015 context, you can simply use let instead of var in the original code:
-	for (let i = 0; i < 5; i++) {
+	}`
+This will produce the presumably desired result of logging 0, 1, 2, 3, and 4 to the console. 
+In an ES2015 context, you can simply use let instead of var in the original code:
+	`for (let i = 0; i < 5; i++) {
 		setTimeout(function() { console.log(i); }, i * 1000 );
-	}
+	}`
 
 What would the following lines of code output to the console?
-	console.log("0 || 1 = "+(0 || 1));
+	`console.log("0 || 1 = "+(0 || 1));
 	console.log("1 || 2 = "+(1 || 2));
 	console.log("0 && 1 = "+(0 && 1));
-	console.log("1 && 2 = "+(1 && 2));
+	console.log("1 && 2 = "+(1 && 2));`
 	Explain your answer.
 	
 	The code will output the following four lines:
@@ -510,14 +462,14 @@ What is the output out of the following code? Explain your answer.
 	or referencing a[b].
 
 What will the following code output to the console:
-	console.log((function f(n){
-					return ((n > 1) ? n * f(n-1) : n)
-				 })(10));
+	`console.log((function f(n){
+			return ((n > 1) ? n * f(n-1) : n)
+	 })(10));`
 	The code will output the value of 10 factorial (i.e., 10!, or 3,628,800).
 	Here’s why:
 	The named function f() calls itself recursively, until it gets down to calling f(1)
 	which simply returns 1 . Here, therefore, is what this does:
-	f(1): returns n, which is 1
+	`f(1): returns n, which is 1
 	f(2): returns 2 * f(1), which is 2
 	f(3): returns 3 * f(2), which is 6
 	f(4): returns 4 * f(3), which is 24
@@ -526,14 +478,14 @@ What will the following code output to the console:
 	f(7): returns 7 * f(6), which is 5040
 	f(8): returns 8 * f(7), which is 40320
 	f(9): returns 9 * f(8), which is 362880
-	f(10): returns 10 * f(9), which is 3628800
+	f(10): returns 10 * f(9), which is 3628800`
 
 Consider the code snippet below. What will the console output be and why?
-	(function(x) {
+	`(function(x) {
 		return (function(y) {
 			console.log(x);
 		})(2)
-	})(1);
+	})(1);`
 
 	The output will be 1 , even though the value of x is never set in the inner function.
 	a closure is a function, along with all variables or functions that were in-scope at the time 
@@ -545,12 +497,12 @@ Consider the code snippet below. What will the console output be and why?
 	outer function is searched for a defined variable x , which is found to have a value of 1
 
 What will the following code output to the console and why:
-	var hero = {
+	`var hero = {
 		_name: 'John Doe',
 		getSecretIdentity: function (){
 			return this._name;
 		}
-	};
+	};`
 	var stoleSecretIdentity = hero.getSecretIdentity;
 	console.log(stoleSecretIdentity());
 	console.log(hero.getSecretIdentity());
@@ -574,16 +526,16 @@ provided callback function. The arguments to the function should be:
 	
 	Visiting all elements in a tree (DOM) is a classic Depth-First-Search algorithm application.
 	Here’s an example solution:
-	function Traverse(p_element,p_callback) {
+	`function Traverse(p_element,p_callback) {
 		p_callback(p_element);
 		var list = p_element.children;
 		for (var i = 0; i < list.length; i++) {
 			Traverse(list[i],p_callback); // recursive call
 		}
-	}
+	}`
 
 What is the output of the following code?
-	var length = 10;
+	`var length = 10;
 	function fn() {
 		console.log(this.length);
 	}
@@ -597,7 +549,7 @@ What is the output of the following code?
 	obj.method(fn, 1);
 	Output:
 	10
-	2
+	2`
 	Why isn’t it 10 and 5 ?
 	
 	In the first place, as fn is passed as a parameter to the function method , the scope
@@ -608,14 +560,10 @@ What is the output of the following code?
   passed two parameters; the first is a function callback and other is just a number.
 
 When fn() is called inside method , which was passed the function as a parameter at the global level, 
-this.length will have access to var length = 10 (declared globally) not length = 5 as defined in Object obj .
-	
-	Now, we know that we can access any number of arguments in a JavaScript function using the arguments[] array.
-  Hence arguments[0]() is nothing but calling fn() . Inside fn now, the scope of this function becomes the arguments array, 
-  and logging the length of arguments[] will return 2 .
+this.length will have access to var length = 10 (declared globally) not length = 5 as defined in Object obj .Now, we know that we can access any number of arguments in a JavaScript function using the arguments[] array. Hence arguments[0]() is nothing but calling fn() . Inside fn now, the scope of this function becomes the arguments array, and logging the length of arguments[] will return 2 .
 
 Consider the following code. What will the output be, and why?
-	(function () {
+	`(function () {
 		try {
 			throw new Error();
 		} catch (x) {
@@ -624,15 +572,13 @@ Consider the following code. What will the output be, and why?
 		}
 		console.log(x);
 		console.log(y);
-	})();
+	})();`
 
 1
 undefined
 2
-	var statements are hoisted (without their value initialization) to the top of the global or function scope 
-	it belongs to, even when it’s inside a with or catch block.
-	However, the error’s identifier is only visible inside the catch block. It is equivalent to:
-	(function () {
+var statements are hoisted (without their value initialization) to the top of the global or function scope it belongs to, even when it’s inside a with or catch block.	However, the error’s identifier is only visible inside the catch block. It is equivalent to:
+	`(function () {
 	var x, y; // outer and hoisted
 		try {
 			throw new Error();
@@ -643,29 +589,23 @@ undefined
 		}
 	console.log(x);
 	console.log(y);
-	})();
+	})();`
 
 What will be the output of this code?
-	var x = 21;
+	`var x = 21;
 	var girl = function () {
 		console.log(x);
 		var x = 20;
 	};
-	girl ();
-
-	Neither 21, nor 20, the result is undefined
-	It’s because JavaScript initialization is not hoisted.Why doesn’t it show the global value of 21? 
-	The reason is that when the function is executed, it checks that there’s a local x variable present 
-	but doesn’t yet declare it, so it won’t look for global one.
+	girl ();`
+Neither 21, nor 20, the result is undefined It’s because JavaScript initialization is not hoisted.Why doesn’t it show the global value of 21? The reason is that when the function is executed, it checks that there’s a local x variable present but doesn’t yet declare it, so it won’t look for global one.
 
 How do you clone an object?
-	var obj = {a: 1 ,b: 2}
-	var objclone = Object.assign({},obj);
-	Now the value of objclone is {a: 1 ,b: 2} but points to a different object than obj .
-	Note the potential pitfall, though: Object.clone() will just do a shallow copy, not a deep copy. 
-	This means that nested objects aren’t copied. They still refer to the same nested objects as the original:
+	`var obj = {a: 1 ,b: 2}
+	var objclone = Object.assign({},obj);`
+Now the value of objclone is {a: 1 ,b: 2} but points to a different object than obj .Note the potential pitfall, though: Object.clone() will just do a shallow copy, not a deep copy. This means that nested objects aren’t copied. They still refer to the same nested objects as the original:
 	
-	let obj = {
+	`let obj = {
 		a: 1,
 		b: 2,
 		c: {
@@ -676,26 +616,21 @@ How do you clone an object?
 	console.log('objclone: ', objclone);
 	obj.c.age = 45;
 	console.log('After Change - obj: ', obj); // 45 - This also changes
-	console.log('After Change - objclone: ', objclone); // 45
+	console.log('After Change - objclone: ', objclone); // 45`
 	
 What will this code print?
-	for (let i = 0; i < 5; i++) {
+	`for (let i = 0; i < 5; i++) {
 		setTimeout(function() { console.log(i); }, i * 1000 );
-	}
-	It will print 0 1 2 3 4 , because we use let instead of var here. The variable i is only seen in the 
-	for loop’s block scope.
+	}`
+It will print 0 1 2 3 4 , because we use let instead of var here. The variable i is only seen in the for loop’s block scope.
 
 What do the following lines output, and why?
-	console.log(1 < 2 < 3);
-	console.log(3 > 2 > 1);
-
-	The first statement returns true which is as expected.
-	The second returns false because of how the engine works regarding operator associativity for < and >.
-	It compares left to right, so 3 > 2 > 1 JavaScript translates to true > 1 . true has value 1 , 
-	so it then compares 1 > 1 , which is false.
+	`console.log(1 < 2 < 3);
+	console.log(3 > 2 > 1);`
+The first statement returns true which is as expected. The second returns false because of how the engine works regarding operator associativity for < and >.It compares left to right, so 3 > 2 > 1 JavaScript translates to true > 1 . true has value 1 , so it then compares 1 > 1 , which is false.
 
 How do you add an element at the begining of an array? How do you add one at the end?
-	var myArray = ['a', 'b', 'c', 'd'];
+	`var myArray = ['a', 'b', 'c', 'd'];
 	myArray.push('end');
 	myArray.unshift('start');
 	console.log(myArray); // ["start", "a", "b", "c", "d", "end"]
@@ -703,7 +638,7 @@ How do you add an element at the begining of an array? How do you add one at the
 	myArray = ['start', ...myArray];
 	myArray = [...myArray, 'end'];
 	Or, in short:
-	myArray = ['start', ...myArray, 'end'];
+	myArray = ['start', ...myArray, 'end'];`
 
 Imagine you have this code:
 	var a = [1, 2, 3];
