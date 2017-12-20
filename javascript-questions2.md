@@ -481,6 +481,7 @@ What will the following code output to the console:
 	f(10): returns 10 * f(9), which is 3628800`
 
 Consider the code snippet below. What will the console output be and why?
+
 	`(function(x) {
 		return (function(y) {
 			console.log(x);
