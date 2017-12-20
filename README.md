@@ -1,8 +1,11 @@
 # javascript-interview-questions
 Explain event delegation
-	Event delegation is a technique involving adding event listeners to a parent element instead of adding them to the descendant elements. The listener will fire whenever the event is triggered on the descendant elements due to event bubbling up the DOM. The benefits of this technique are:
+	Event delegation is a technique involving adding event listeners to a parent element instead of adding them to the 
+	descendant elements. The listener will fire whenever the event is triggered on the descendant elements due to event bubbling 
+	up the DOM. The benefits of this technique are:
 
-	1. Memory footprint goes down because only one single handler is needed on the parent element, rather than having to attach event handlers on each descendant.
+	1. Memory footprint goes down because only one single handler is needed on the parent element, rather than having to 
+	attach event handlers on each descendant.
 	2. There is no need to unbind the handler from elements that are removed and to bind the event for new elements.
 	
 	<ul id="parent-list">
@@ -30,21 +33,24 @@ Explain event delegation
 	document.getElementById("myDiv").addEventListener("click",function(e) {
 	// e.target was the clicked element
 	  if (e.target && e.target.matches("a.classA")) {
-	console.log("Anchor element clicked!");
-	}
+		console.log("Anchor element clicked!");
+	   }
 	});
 
 Explain how this works in JavaScript
 	If the new keyword is used when calling the function, this inside the function is a brand new object.
-	If apply, call, or bind are used to call/create a function, this inside the function is the object that is passed in as the argument.
+	If apply, call, or bind are used to call/create a function, this inside the function is the object that is passed in as 
+	the argument.
 	If a function is called as a method, such as obj.method()?—?this is the object that the function is a property of.
-	If a function is invoked as a free function invocation, meaning it was invoked without any of the conditions present above, this is the global object. In a browser, it is the window object. If in strict mode ('use strict'), this will be undefined instead of the global object.
+	If a function is invoked as a free function invocation, meaning it was invoked without any of the conditions present above, 	    this is the global object. In a browser, it is the window object. 
+	If in strict mode ('use strict'), this will be undefined instead of the global object.
 	If multiple of the above rules apply, the rule that is higher wins and will set the this value.
-	e.g  var person = {
+	
+	var person = {
 	firstName:"John",
 	lastName: "Doe",
 	fullName: function() {
-	return this.firstName + " " + this.lastName;
+		return this.firstName + " " + this.lastName;
 	}
 	}
 	var myObject = {
